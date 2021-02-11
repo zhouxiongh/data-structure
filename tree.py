@@ -77,10 +77,23 @@ def in_order_traversal(node, result):
 
 class Solution(Bst):
     def _find_second_largest(self, node):
-        pass
+        if node.right is not None:
+            if node.right.left is not None or node.right.right is not None:
+                return self._find_second_largest(node.right)
+            else:
+                return node
+        else:
+            return self._find_right_most_node(node.left)
 
     def _find_right_most_node(self, node):
-        pass
+        if node.right is not None:
+            return self._find_right_most_node(node.right)
+        else:
+            return node
 
     def find_second_largest(self):
-        pass
+        if self.root is None:
+            raise TypeError('root cannot be None')
+        if self.root.left is None and self.root.right is None:
+            raise ValueError('root must have at least one child')
+        return self._find_second_largest(self.root)

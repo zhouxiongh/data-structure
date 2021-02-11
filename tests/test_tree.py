@@ -8,7 +8,7 @@ Enter module description here
 """
 import unittest
 
-from tree import Bst, in_order_traversal, MinBst
+from tree import Bst, in_order_traversal, MinBst, Solution, Node
 
 
 class TestBst(unittest.TestCase):
@@ -47,6 +47,53 @@ class TestMinBst(unittest.TestCase):
         root = min_bst.create_min_bst(array)
         self.assertEqual(height(root), 4)
         print('Success: test_bst_min')
+
+
+class TestBstSecondLargest(unittest.TestCase):
+
+    def test_bst_second_largest(self):
+
+        bst = Solution(None)
+
+        self.assertRaises(TypeError, bst.find_second_largest)
+
+        root = Node(10)
+
+        bst = Solution(root)
+
+        node5 = bst.insert(5)
+
+        node15 = bst.insert(15)
+
+        node3 = bst.insert(3)
+
+        node8 = bst.insert(8)
+
+        node12 = bst.insert(12)
+
+        node20 = bst.insert(20)
+
+        node2 = bst.insert(2)
+
+        node4 = bst.insert(4)
+
+        node30 = bst.insert(30)
+
+        self.assertEqual(node20, bst.find_second_largest())
+
+        root = Node(10)
+
+        bst = Solution(root)
+
+        node5 = bst.insert(5)
+
+        node3 = bst.insert(3)
+
+        node7 = bst.insert(7)
+
+        self.assertEqual(node7, bst.find_second_largest())
+
+        print('Success: test_bst_second_largest')
 
 
 def height(node):
