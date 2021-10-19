@@ -97,3 +97,31 @@ class Solution(Bst):
         if self.root.left is None and self.root.right is None:
             raise ValueError('root must have at least one child')
         return self._find_second_largest(self.root)
+
+
+class BstSuccessor:
+
+    def get_next(self, node):
+        if node is None:
+            raise TypeError('node cannot be none')
+        if node.right is not None:
+            return self._left_most(node.right)
+        else:
+            return self._next_ancestor(node)
+
+    @staticmethod
+    def _left_most(node):
+        if node is None:
+            return None
+        while node.left:
+            node = node.left
+        return node.data
+
+    def _next_ancestor(self, node):
+        if node.parent is not None:
+            if node.parent.data > node.data:
+                return node.parent.data
+            else:
+                return self._next_ancestor(node.parent)
+        return None
+
