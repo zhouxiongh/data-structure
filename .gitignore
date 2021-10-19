@@ -1,0 +1,4 @@
+
+*.pyc
+tests/_trial_temp/
+*.log
