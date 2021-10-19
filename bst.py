@@ -117,11 +117,11 @@ class BstSuccessor:
             node = node.left
         return node.data
 
-    def _next_ancestor(self, node):
-        if node.parent is not None:
+    @staticmethod
+    def _next_ancestor(node):
+        while node.parent:
             if node.parent.data > node.data:
                 return node.parent.data
-            else:
-                return self._next_ancestor(node.parent)
+            node = node.parent
         return None
 
