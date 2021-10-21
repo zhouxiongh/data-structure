@@ -38,11 +38,9 @@ class BuildOrder(object):
             for adj_node in list(node.adj_nodes.values()):
                 node.remove_neighbor(adj_node)
             processed_nodes[node.key] = node
-        # nodes_to_process = {}
 
     def find_build_order(self):
         result = []
-        # nodes_to_process = {}
         process_nodes = {}
         while len(result) != len(self.graph.nodes):
             nodes_to_process = self._find_start_nodes(process_nodes)
