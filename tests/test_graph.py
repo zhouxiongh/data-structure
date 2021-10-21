@@ -23,7 +23,11 @@ class Results:
         return str(self.results)
 
 
-class TestGraph(unittest.TestCase):
+class TestGraph:
+    def __init__(self):
+        self.results = Results()
+        self.graph = self.create_graph()
+
     @staticmethod
     def create_graph():
         graph = Graph()
@@ -32,7 +36,7 @@ class TestGraph(unittest.TestCase):
         return graph
 
     def test_graph(self):
-        graph = self.create_graph()
+        graph = self.graph
         graph.add_edge(0, 1, weight=5)
         graph.add_edge(0, 5, weight=2)
         graph.add_edge(1, 2, weight=3)
@@ -68,7 +72,7 @@ class TestGraph(unittest.TestCase):
         print("Success: test_graph")
 
     def test_undirected(self):
-        graph = self.create_graph()
+        graph = self.graph
         graph.add_undirected_edge(0, 1, weight=5)
         graph.add_undirected_edge(0, 5, weight=2)
         graph.add_undirected_edge(1, 2, weight=3)
@@ -83,7 +87,16 @@ class TestGraph(unittest.TestCase):
         print("Success: test_undirected")
 
     def test_bfs(self):
-        graph = self.create_graph()
+        graph = self.graph
+        self.add_edge(graph)
+
+        graph.bfs(graph.nodes[0], self.results.add_result)
+        assert_equal(str(self.results), "[0, 1, 4, 5, 3, 2]")
+
+        print('Success: test_bfs')
+
+    @staticmethod
+    def add_edge(graph):
         graph.add_edge(0, 1, 5)
         graph.add_edge(0, 4, 3)
         graph.add_edge(0, 5, 2)
@@ -93,11 +106,14 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(3, 2, 7)
         graph.add_edge(3, 4, 8)
 
-        self.results = Results()
-        graph.bfs(graph.nodes[0], self.results.add_result)
-        assert_equal(str(self.results), "[0, 1, 4, 5, 3, 2]")
+    def test_dfs(self):
+        graph = self.graph
+        self.add_edge(graph)
 
-        print('Success: test_bfs')
+        graph.dfs(graph.nodes[0], self.results.add_result)
+        assert_equal(str(self.results), "[0, 1, 3, 2, 4, 5]")
+
+        print("Success: test_dfs")
 
 
 if __name__ == '__main__':

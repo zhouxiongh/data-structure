@@ -88,3 +88,11 @@ class Graph:
                     queue.append(adj_node)
                     adj_node.visit_state = State.visited
 
+    def dfs(self, root, visit_func):
+        if root is None:
+            return
+        visit_func(root)
+        root.visit_state = State.visited
+        for node in root.adj_nodes.values():
+            if node.visit_state == State.unvisited:
+                self.dfs(node, visit_func)
