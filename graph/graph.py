@@ -58,7 +58,7 @@ class Graph:
             self.nodes[key] = Node(key)
         return self.nodes[key]
 
-    def add_edge(self, source_key, dest_key, weight):
+    def add_edge(self, source_key, dest_key, weight=0):
         if source_key is None or dest_key is None:
             raise KeyError("Invalid key")
         if source_key not in self.nodes:
