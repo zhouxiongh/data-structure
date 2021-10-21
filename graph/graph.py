@@ -7,6 +7,7 @@
 Graph implementation
 """
 from enum import Enum
+from collections import deque
 
 
 class State(Enum):
@@ -71,4 +72,19 @@ class Graph:
             raise KeyError("Invalid key")
         self.add_edge(source_key, dest_key, weight)
         self.add_edge(dest_key, source_key, weight)
+
+    @staticmethod
+    def bfs(root, visit_func):
+        if root is None:
+            return
+        queue = deque()
+        queue.append(root)
+        root.visit_state = State.visited
+        while queue:
+            node = queue.popleft()
+            visit_func(node)
+            for adj_node in node.adj_nodes.values():
+                if adj_node.visit_state == State.unvisited:
+                    queue.append(adj_node)
+                    adj_node.visit_state = State.visited
 
