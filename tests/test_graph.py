@@ -115,6 +115,9 @@ class TestGraph:
 
         print("Success: test_dfs")
 
+    def test_path_exists(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

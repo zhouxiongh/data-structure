@@ -96,3 +96,6 @@ class Graph:
         for node in root.adj_nodes.values():
             if node.visit_state == State.unvisited:
                 self.dfs(node, visit_func)
+
+    def path_exists(self, start, end):
+        pass
