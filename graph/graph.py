@@ -51,12 +51,20 @@ class Node:
 
 
 class Graph:
-    def __init__(self):
-        self.nodes = {}
+    def init(self):
+        for key in self.nodes.keys():
+            # Set each node's previous node key to None
+            # Set each node's shortest path weight to infinity
+            # Add each node's shortest path weight to the priority queue
+            self.previous[key] = None
+            self.path_weight[key] = sys.maxsize
+            self.remaining.insert(PriorityQueueNode(key, self.path_weight[key]))
 
-        self.previous = {}  # Key: node key, val: prev node key, shortest path
-        self.path_weight = {}  # Key: node key, val: weight, shortest path
+    def __init__(self):
         self.remaining = PriorityQueue()  # Queue of node key, path weight
+        self.path_weight = {}  # Key: node key, val: weight, shortest path
+        self.previous = {}  # Key: node key, val: prev node key, shortest path
+        self.nodes = {}
 
     def add_node(self, key):
         if key is None:
@@ -134,13 +142,7 @@ class Graph:
             raise TypeError('Input node keys cannot be None')
         if start not in self.nodes or end not in self.nodes:
             raise ValueError('Invalid start or end node key')
-        for key in self.nodes.keys():
-            # Set each node's previous node key to None
-            # Set each node's shortest path weight to infinity
-            # Add each node's shortest path weight to the priority queue
-            self.previous[key] = None
-            self.path_weight[key] = sys.maxsize
-            self.remaining.insert(PriorityQueueNode(key, self.path_weight[key]))
+        self.init()
         self.path_weight[start] = 0
         self.remaining.decrease_key(start, 0)
         while self.remaining:
