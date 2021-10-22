@@ -6,8 +6,11 @@
 """
 Graph implementation
 """
+import sys
 from enum import Enum
 from collections import deque
+
+from priority_queue import PriorityQueueNode, PriorityQueue
 
 
 class State(Enum):
@@ -50,6 +53,10 @@ class Node:
 class Graph:
     def __init__(self):
         self.nodes = {}
+
+        self.previous = {}  # Key: node key, val: prev node key, shortest path
+        self.path_weight = {}  # Key: node key, val: weight, shortest path
+        self.remaining = PriorityQueue()  # Queue of node key, path weight
 
     def add_node(self, key):
         if key is None:
@@ -121,3 +128,45 @@ class Graph:
                     queue.append(adj_node)
                     adj_node.visit_state = State.visited
         return False
+
+    def find_shortest_path(self, start, end):
+        if start is None or end is None:
+            raise TypeError('Input node keys cannot be None')
+        if start not in self.nodes or end not in self.nodes:
+            raise ValueError('Invalid start or end node key')
+        for key in self.nodes.keys():
+            # Set each node's previous node key to None
+            # Set each node's shortest path weight to infinity
+            # Add each node's shortest path weight to the priority queue
+            self.previous[key] = None
+            self.path_weight[key] = sys.maxsize
+            self.remaining.insert(PriorityQueueNode(key, self.path_weight[key]))
+        self.path_weight[start] = 0
+        self.remaining.decrease_key(start, 0)
+        while self.remaining:
+            # Extract the min node (node with minimum path weight)
+            # from the priority queue
+            min_node_key = self.remaining.extract_min().obj
+            min_node = self.nodes[min_node_key]
+            # Loop through each adjacent node in the min node
+            for adj_key in min_node.adj_nodes.keys():
+                # Node's path:
+                # Adjacent node's edge weight + the min node's
+                # shortest path weight
+                new_weight = (min_node.adj_weights[adj_key] +
+                              self.path_weight[min_node_key])
+                # Only update if the newly calculated path is
+                # less than the existing node's shortest path
+                if self.path_weight[adj_key] > new_weight:
+                    # Set the node's previous node key leading to the shortest path
+                    # Update the adjacent node's shortest path and
+                    # update the value in the priority queue
+                    self.previous[adj_key] = min_node_key
+                    self.path_weight[adj_key] = new_weight
+                    self.remaining.decrease_key(adj_key, new_weight)
+        result = []
+        current_key = end
+        while current_key is not None:
+            result.append(current_key)
+            current_key = self.previous[current_key]
+        return result[::-1]
