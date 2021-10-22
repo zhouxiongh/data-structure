@@ -97,5 +97,27 @@ class Graph:
             if node.visit_state == State.unvisited:
                 self.dfs(node, visit_func)
 
-    def path_exists(self, start, end):
-        pass
+    @staticmethod
+    def path_exists(start, end):
+        """
+        bfs from start to end
+        :param start: Node
+        :param end: Node
+        :return: True or False
+        """
+        if start is None or end is None:
+            return False
+        if start is end:
+            return True
+        queue = deque()
+        queue.append(start)
+        start.visit_state = State.visited
+        while queue:
+            node = queue.popleft()
+            if node is end:
+                return True
+            for adj_node in node.adj_nodes.values():
+                if adj_node.visit_state == State.unvisited:
+                    queue.append(adj_node)
+                    adj_node.visit_state = State.visited
+        return False

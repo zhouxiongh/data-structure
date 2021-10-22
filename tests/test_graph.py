@@ -116,7 +116,17 @@ class TestGraph:
         print("Success: test_dfs")
 
     def test_path_exists(self):
-        pass
+        graph = self.graph
+
+        self.add_edge(graph)
+
+        assert_equal(graph.path_exists(graph.nodes[0], graph.nodes[2]), True)
+
+        assert_equal(graph.path_exists(graph.nodes[0], graph.nodes[0]), True)
+
+        assert_equal(graph.path_exists(graph.nodes[4], graph.nodes[5]), False)
+
+        print('Success: test_path_exists')
 
 
 if __name__ == '__main__':
