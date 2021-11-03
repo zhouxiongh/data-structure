@@ -10,7 +10,7 @@ import sys
 from enum import Enum
 from collections import deque
 
-from priority_queue import PriorityQueueNode, PriorityQueue
+from priority_queue import QueueNode, PriorityQueue
 
 
 class State(Enum):
@@ -19,7 +19,7 @@ class State(Enum):
     visited = 2
 
 
-class Node:
+class GraphNode:
     def __init__(self, key):
         self.key = key
         self.visit_state = State.unvisited
@@ -58,7 +58,7 @@ class Graph:
             # Add each node's shortest path weight to the priority queue
             self.previous[key] = None
             self.path_weight[key] = sys.maxsize
-            self.remaining.insert(PriorityQueueNode(key, self.path_weight[key]))
+            self.remaining.insert(QueueNode(key, self.path_weight[key]))
 
     def __init__(self):
         self.remaining = PriorityQueue()  # Queue of node key, path weight
@@ -70,7 +70,7 @@ class Graph:
         if key is None:
             raise TypeError("key cannot be None")
         if key not in self.nodes:
-            self.nodes[key] = Node(key)
+            self.nodes[key] = GraphNode(key)
         return self.nodes[key]
 
     def add_edge(self, source_key, dest_key, weight=0):
